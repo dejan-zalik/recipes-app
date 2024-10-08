@@ -1,0 +1,62 @@
+[
+  {
+    "_id": "11",
+    "name": "Egg omelette",
+    "description": "veggie egg omelette",
+    "ingredients": [
+      {
+        "quantity": "1",
+        "unit": "big",
+        "ingredient": "egg"
+      },
+      {
+        "quantity": "5",
+        "unit": "g",
+        "ingredient": "spice"
+      },
+      {
+        "quantity": "1",
+        "unit": "l",
+        "ingredient": "water"
+      },
+      {
+        "quantity": "1",
+        "unit": "handful",
+        "ingredient": "veggies"
+      }
+    ],
+    "instructions": [
+      "put egg into pan",
+      "add veggies",
+      "mix and wait",
+      "eat"
+    ]
+  },
+  {
+    "_id": "13",
+    "name": "Pasta salad",
+    "description": "Pasta with a bunch of veggies",
+    "ingredients": [
+      {
+        "quantity": "500",
+        "unit": "g",
+        "ingredient": "pasta"
+      },
+      {
+        "quantity": "1",
+        "unit": "l",
+        "ingredient": "water"
+      },
+      {
+        "quantity": "500",
+        "unit": "g",
+        "ingredient": "veggies"
+      }
+    ],
+    "instructions": [
+      "cook pasta",
+      "add veggies",
+      "mix and eat"
+    ]
+  }
+]
