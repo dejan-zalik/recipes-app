@@ -18,9 +18,9 @@ const AddIngredientsForm = () => {
 
     if (quantity !== '' && unit !== '' && ingredient !== '') {
       ingredients.push({
-        quantity: quantity,
-        unit: unit,
-        ingredient: ingredient,
+        quantity: quantity.trim(),
+        unit: unit.trim(),
+        ingredient: ingredient.trim(),
       });
     } else {
       window.alert('Please fill out all ingredients');
@@ -121,7 +121,6 @@ const AddIngredientsForm = () => {
       {/* This will not display it, but will send data to server */}
       <div>
         <input
-          className="w-full bg-inherit"
           value={JSON.stringify(ingredients)}
           name="ingredients"
           readOnly

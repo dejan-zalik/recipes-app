@@ -1,21 +1,17 @@
 'use server';
 
-import recipes from '@/recipes.json';
 import { redirect } from 'next/navigation';
 import { revalidatePath } from 'next/cache';
 
 import { promises as fs } from 'fs';
 
-const addRecipe = async (formData) => {
+const editRecipe = async (recipeId, formData) => {
   const ingredients = JSON.parse(formData.getAll('ingredients'));
   const instructions = JSON.parse(formData.getAll('instructions'));
-  const maxId = recipes
-    .map((recipe) => recipe._id)
-    .reduce((a, b) => Math.max(a, b), -Infinity);
-  const idNum = maxId + 1;
+  const existingId = recipeId;
 
   const recipeData = {
-    _id: idNum.toString(),
+    _id: existingId,
     name: formData.get('name'),
     // slug: formData.get('name').toLowerCase().replaceAll(' ', '-'),
     description: formData.get('description'),
@@ -23,26 +19,16 @@ const addRecipe = async (formData) => {
     instructions,
   };
 
-  // console.log(ingredients);
-
-  // const recipeExists = recipes.some(
-  //   (recipes) => recipes.name.toLowerCase() === recipeData.name.toLowerCase()
-  // );
-
-  // if (recipeExists) {
-  //   throw new Error('Recipe exists already');
-  // }
-
-  // console.log(recipeData);
-
   const filePath = 'recipes.json';
 
   const jsonData = await fs.readFile(filePath, 'utf-8');
   const data = JSON.parse(jsonData);
 
-  data.push(recipeData);
+  const removeOldRecipe = data.filter((recipe) => recipe._id !== recipeId);
 
-  const updatedJsonData = JSON.stringify(data, null, 2);
+  removeOldRecipe.push(recipeData);
+
+  const updatedJsonData = JSON.stringify(removeOldRecipe, null, 2);
   await fs.writeFile(filePath, updatedJsonData);
 
   revalidatePath('/', 'layout');
@@ -52,4 +38,4 @@ const addRecipe = async (formData) => {
   // redirect(`/recipes/${recipeData._id}`);
 };
 
-export default addRecipe;
+export default editRecipe;

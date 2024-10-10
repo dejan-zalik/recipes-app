@@ -1,8 +1,21 @@
+'use client';
+
+import editRecipe from '@/app/actions/editRecipe';
 import EditIngredientsForm from './EditIngredientsForm';
+import EditInstructionsForm from './EditInstructionsForm';
 
 const RecipeEditForm = ({ recipe }) => {
+  const recipeId = recipe._id;
+  const editRecipeWithId = editRecipe.bind(null, recipeId);
   return (
-    <form>
+    <form
+      onKeyDown={(e) => {
+        if (e.key === 'Enter') {
+          e.preventDefault();
+        }
+      }}
+      action={editRecipeWithId}
+    >
       <h2 className="text-3xl text-left font-semibold mb-6">Edit recipe</h2>
 
       <div className="mb-4">
@@ -37,7 +50,7 @@ const RecipeEditForm = ({ recipe }) => {
 
       <EditIngredientsForm recipe={recipe} />
 
-      {/* <AddInstructionsForm /> */}
+      <EditInstructionsForm recipe={recipe} />
 
       <div>
         <button

@@ -1,6 +1,7 @@
 'use client';
 
 import { useState, useEffect } from 'react';
+import { X, Pencil } from 'lucide-react';
 
 const EditIngredientsForm = ({ recipe }) => {
   const [quantity, setQuantity] = useState('');
@@ -11,13 +12,17 @@ const EditIngredientsForm = ({ recipe }) => {
   const fillIngredients = () => {
     let ingredients;
     if (localStorage.getItem('ingredients') === null) {
-      ingredients = [];
+      ingredients = recipe.ingredients;
     } else {
       ingredients = JSON.parse(localStorage.getItem('ingredients'));
     }
 
     if (quantity !== '' && unit !== '' && ingredient !== '') {
-      ingredients.push(quantity + '&' + unit + '&' + ingredient);
+      ingredients.push({
+        quantity: quantity.trim(),
+        unit: unit.trim(),
+        ingredient: ingredient.trim(),
+      });
     } else {
       window.alert('Please fill out all ingredients');
       // return;
@@ -28,9 +33,17 @@ const EditIngredientsForm = ({ recipe }) => {
     setIngredients(ingredients);
   };
 
+  const handleDeleteIngredient = (index) => {
+    const updatedIngredients = ingredients.filter(
+      (ingredient) => ingredient !== ingredients[index]
+    );
+    localStorage.setItem('ingredients', JSON.stringify(updatedIngredients));
+    setIngredients(updatedIngredients);
+  };
+
   useEffect(() => {
     if (localStorage.getItem('ingredients') === null) {
-      setIngredients([]);
+      setIngredients(recipe.ingredients);
     } else {
       setIngredients(JSON.parse(localStorage.getItem('ingredients')));
     }
@@ -94,31 +107,53 @@ const EditIngredientsForm = ({ recipe }) => {
       {/* This will display it, but not send data to server */}
       <div className='className="border text-left rounded w-full pt-2 px-3'>
         {ingredients.map((ingredient, index) => (
-          <div key={index}>
+          <div key={index} className="flex">
             <input
-              className="w-full bg-inherit"
-              value={ingredient.replaceAll('&', ' ')}
-              key={index}
+              className="bg-inherit pr-4"
+              value={
+                ingredient.quantity +
+                ' ' +
+                ingredient.unit +
+                ' ' +
+                ingredient.ingredient
+              }
               name="ingredients"
               readOnly
               disabled
             />
+            <button
+              className="btn btn-xs btn-ghost btn-circle shadow-md"
+              onClick={(e) => {
+                e.preventDefault();
+                setQuantity(ingredient.quantity);
+                setUnit(ingredient.unit);
+                setIngredient(ingredient.ingredient);
+                handleDeleteIngredient(index);
+              }}
+            >
+              <Pencil size={14} />
+            </button>
+            <button
+              className="btn btn-xs btn-ghost btn-circle shadow-md text-red-500"
+              onClick={(e) => {
+                e.preventDefault();
+                handleDeleteIngredient(index);
+              }}
+            >
+              <X size={14} />
+            </button>
           </div>
         ))}
       </div>
 
       {/* This will not display it, but will send data to server */}
       <div>
-        {ingredients.map((ingredient, index) => (
-          <input
-            className="w-full bg-inherit"
-            value={ingredient.replaceAll('&', ' ')}
-            key={index}
-            name="ingredients"
-            readOnly
-            hidden
-          />
-        ))}
+        <input
+          value={JSON.stringify(ingredients)}
+          name="ingredients"
+          readOnly
+          hidden
+        />
       </div>
     </div>
   );

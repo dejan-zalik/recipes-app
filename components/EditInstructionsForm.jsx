@@ -1,15 +1,16 @@
 'use client';
 
 import { useState, useEffect } from 'react';
+import { X, Pencil } from 'lucide-react';
 
-const AddInstructionsForm = () => {
+const EditInstructionsForm = ({ recipe }) => {
   const [instruction, setInstruction] = useState('');
   const [instructions, setInstructions] = useState([]);
 
   const fillInstructions = () => {
     let instructions;
     if (localStorage.getItem('instructions') === null) {
-      instructions = [];
+      instructions = recipe.instructions;
     } else {
       instructions = JSON.parse(localStorage.getItem('instructions'));
     }
@@ -26,9 +27,18 @@ const AddInstructionsForm = () => {
     setInstructions(instructions);
   };
 
+  const handleDeleteInstruction = (index) => {
+    const updatedInstructions = instructions.filter(
+      (instruction) => instruction !== instructions[index]
+    );
+
+    localStorage.setItem('instructions', JSON.stringify(updatedInstructions));
+    setInstructions(updatedInstructions);
+  };
+
   useEffect(() => {
     if (localStorage.getItem('instructions') === null) {
-      setInstructions([]);
+      setInstructions(recipe.instructions);
     } else {
       setInstructions(JSON.parse(localStorage.getItem('instructions')));
     }
@@ -68,15 +78,33 @@ const AddInstructionsForm = () => {
       {/* This will display it, but not send data to server */}
       <div className='className="border text-left rounded w-full pt-2 px-3'>
         {instructions.map((instruction, index) => (
-          <div key={index}>
+          <div key={index} className="flex">
             <input
-              className="w-full bg-inherit"
-              value={'Step ' + ++index + ': ' + instruction}
-              key={index}
+              className="bg-inherit pr-4"
+              value={'Step ' + (1 + index).toString() + ': ' + instruction}
               name="instructions"
               readOnly
               disabled
             />
+            <button
+              className="btn btn-xs btn-ghost btn-circle shadow-md"
+              onClick={(e) => {
+                e.preventDefault();
+                setInstruction(instruction);
+                handleDeleteInstruction(index);
+              }}
+            >
+              <Pencil size={14} />
+            </button>
+            <button
+              className="btn btn-xs btn-ghost btn-circle shadow-md text-red-500"
+              onClick={(e) => {
+                e.preventDefault();
+                handleDeleteInstruction(index);
+              }}
+            >
+              <X size={14} />
+            </button>
           </div>
         ))}
       </div>
@@ -94,4 +122,4 @@ const AddInstructionsForm = () => {
   );
 };
 
-export default AddInstructionsForm;
+export default EditInstructionsForm;

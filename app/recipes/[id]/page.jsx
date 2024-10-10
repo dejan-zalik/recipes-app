@@ -5,7 +5,6 @@ import Link from 'next/link';
 import { X, Pencil } from 'lucide-react';
 import deleteRecipe from '@/app/actions/deleteRecipe';
 import { toast } from 'react-toastify';
-import { useState } from 'react';
 
 const RecipePage = ({ params }) => {
   const recipe = recipes.filter((recipe) => recipe._id === params.id)[0];
@@ -16,7 +15,6 @@ const RecipePage = ({ params }) => {
     );
 
     if (!confirmed) {
-      setConfirm(false);
       return;
     }
     await deleteRecipe(recipeId);
