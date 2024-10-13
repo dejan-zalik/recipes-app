@@ -1,4 +1,4 @@
-const convertToObject = (leanDocument) => {
+const convertToSerializableObject = (leanDocument) => {
   for (const key of Object.keys(leanDocument)) {
     if (leanDocument[key].toJSON && leanDocument[key].toString) {
       leanDocument[key] = leanDocument[key].toString();
@@ -7,4 +7,4 @@ const convertToObject = (leanDocument) => {
   return leanDocument;
 };
 
-export default convertToObject;
+export default convertToSerializableObject;

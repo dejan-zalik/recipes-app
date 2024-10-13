@@ -1,14 +1,12 @@
-'use client';
-
 import RecipeCard from '@/components/RecipeCard';
-import recipes from '@/recipes.json';
+// import recipes from '@/recipes.json';
+import connectDB from '@/config/database';
+import Recipe from '@/models/Recipe';
 import Link from 'next/link';
-import { useEffect } from 'react';
 
-const RecipesPage = () => {
-  useEffect(() => {
-    localStorage.clear();
-  }, []);
+const RecipesPage = async () => {
+  await connectDB();
+  const recipes = await Recipe.find({}).lean();
 
   return (
     <section className="px-4 py-6">

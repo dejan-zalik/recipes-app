@@ -1,4 +1,12 @@
+'use client';
+
+import { useEffect } from 'react';
+
 const RecipeDetails = ({ recipe }) => {
+  useEffect(() => {
+    localStorage.clear();
+  }, []);
+
   return (
     <>
       <div className="bg-white brightness-95 p-6 rounded-lg shadow-md text-left">

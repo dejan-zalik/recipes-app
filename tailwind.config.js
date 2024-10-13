@@ -7,7 +7,11 @@ module.exports = {
     './app/**/*.{js,ts,jsx,tsx,mdx}',
   ],
   theme: {
-    extend: {},
+    extend: {
+      blur: {
+        xs: '2px',
+      },
+    },
   },
   plugins: [daisyui],
   daisyui: {

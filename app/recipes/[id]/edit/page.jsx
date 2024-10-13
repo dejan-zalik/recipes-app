@@ -1,9 +1,16 @@
-import recipes from '@/recipes.json';
+// import recipes from '@/recipes.json';
+import connectDB from '@/config/database';
+import Recipe from '@/models/Recipe';
 import RecipeEditForm from '@/components/RecipeEditForm';
 import Link from 'next/link';
+import convertToSerializableObject from '@/utils/convertToSerializableObject';
 
-const RecipeEditPage = ({ params }) => {
-  const recipe = recipes.filter((recipe) => recipe._id === params.id)[0];
+const RecipeEditPage = async ({ params }) => {
+  await connectDB();
+
+  const recipeDoc = await Recipe.findById(params.id).lean();
+  const recipe = convertToSerializableObject(recipeDoc);
+  // const recipe = recipes.filter((recipe) => recipe._id === params.id)[0];
   return (
     <section className="px-4 py-6">
       <div className="container m-auto py-4 text-center">

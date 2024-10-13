@@ -1,6 +1,7 @@
 import '@/assets/styles/globals.css';
 import Navbar from '@/components/Navbar';
 import { ToastContainer } from 'react-toastify';
+import AuthProvider from '@/components/AuthProvider';
 
 export const metadata = {
   title: 'whatscookin',
@@ -10,13 +11,15 @@ export const metadata = {
 
 const MainLayout = ({ children }) => {
   return (
-    <html>
-      <body>
-        <Navbar />
-        <main>{children}</main>
-        <ToastContainer autoClose={1000} />
-      </body>
-    </html>
+    <AuthProvider>
+      <html>
+        <body>
+          <Navbar />
+          <main>{children}</main>
+          <ToastContainer autoClose={1000} />
+        </body>
+      </html>
+    </AuthProvider>
   );
 };
 
