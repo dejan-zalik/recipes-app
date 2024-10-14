@@ -6,7 +6,7 @@ import { redirect } from 'next/navigation';
 import { revalidatePath } from 'next/cache';
 import { getSessionUser } from '@/utils/getSessionUser';
 
-const addRecipe = async (formData) => {
+const copyRecipe = async (recipe) => {
   await connectDB();
 
   const sessionUser = await getSessionUser();
@@ -17,19 +17,17 @@ const addRecipe = async (formData) => {
 
   const { userId } = sessionUser;
 
-  const ingredients = JSON.parse(formData.getAll('ingredients'));
-  const instructions = JSON.parse(formData.getAll('instructions'));
-
   const recipeData = {
     owner: userId,
-    name: formData.get('name'),
+    name: recipe.name,
     // slug: formData.get('name').toLowerCase().replaceAll(' ', '-'),
-    description: formData.get('description'),
-    ingredients,
-    instructions,
+    description: recipe.description,
+    ingredients: recipe.ingredients,
+    instructions: recipe.instructions,
   };
 
   const newRecipe = new Recipe(recipeData);
+
   await newRecipe.save();
 
   revalidatePath('/', 'layout');
@@ -37,4 +35,4 @@ const addRecipe = async (formData) => {
   redirect(`/recipes/${newRecipe._id}`);
 };
 
-export default addRecipe;
+export default copyRecipe;

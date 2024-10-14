@@ -2,6 +2,8 @@
 
 import { useState, useEffect } from 'react';
 import Link from 'next/link';
+import Image from 'next/image';
+import profileDefault from '@/assets/images/profile.png';
 import { FaGoogle } from 'react-icons/fa';
 import { AlignJustify } from 'lucide-react';
 import { signIn, signOut, useSession, getProviders } from 'next-auth/react';
@@ -10,7 +12,15 @@ import { signIn, signOut, useSession, getProviders } from 'next-auth/react';
 
 const Navbar = () => {
   const { data: session } = useSession();
+  const profileImage = session?.user?.image;
   const [providers, setProviders] = useState(null);
+
+  const handleClick = () => {
+    const elem = document.activeElement;
+    if (elem) {
+      elem?.blur();
+    }
+  };
 
   useEffect(() => {
     const setAuthProviders = async () => {
@@ -43,17 +53,29 @@ const Navbar = () => {
                 role="button"
                 className="btn btn-ghost btn-circle"
               >
-                <AlignJustify />
+                {/* <AlignJustify /> */}
+                <Image
+                  className="h-8 w-8 rounded-full"
+                  src={profileImage || profileDefault}
+                  width={40}
+                  height={40}
+                  alt=""
+                />
               </div>
               <ul
                 tabIndex={0}
                 className="dropdown-content z-[1] menu p-2 shadow bg-base-100 rounded-box w-52"
               >
-                <li>
+                <li onClick={handleClick}>
+                  <Link href="/communityrecipes">Community recipes</Link>
+                </li>
+                <li onClick={handleClick}>
                   <Link href="/recipes">My recipes</Link>
                 </li>
-                <li>
-                  <button onClick={() => signOut()}>Log out</button>
+                <li onClick={handleClick}>
+                  <button onClick={() => signOut({ callbackUrl: '/' })}>
+                    Log out
+                  </button>
                 </li>
               </ul>
             </div>
@@ -69,7 +91,7 @@ const Navbar = () => {
                   <button
                     key={id}
                     onClick={() =>
-                      signIn(provider.id, { callbackUrl: '/recipes' })
+                      signIn(provider.id, { callbackUrl: '/communityrecipes' })
                     }
                     className="btn btn-ghost flex items-center rounded-md px-3 py-2 shadow-md"
                   >

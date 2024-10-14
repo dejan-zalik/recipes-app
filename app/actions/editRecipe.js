@@ -3,11 +3,18 @@ import connectDB from '@/config/database';
 import Recipe from '@/models/Recipe';
 import { redirect } from 'next/navigation';
 import { revalidatePath } from 'next/cache';
-
-// import { promises as fs } from 'fs';
+import { getSessionUser } from '@/utils/getSessionUser';
 
 const editRecipe = async (recipeId, formData) => {
   await connectDB();
+
+  const sessionUser = await getSessionUser();
+
+  if (!sessionUser || !sessionUser.userId) {
+    throw new Error('User ID is required');
+  }
+
+  const { userId } = sessionUser;
 
   const recipe = await Recipe.findById(recipeId);
 
@@ -15,13 +22,16 @@ const editRecipe = async (recipeId, formData) => {
     throw new Error('Recipe not found');
   }
 
+  if (recipe.owner.toString() !== userId) {
+    throw new Error('Unauthorized');
+  }
+
   const ingredients = JSON.parse(formData.getAll('ingredients'));
   const instructions = JSON.parse(formData.getAll('instructions'));
-  // const existingId = recipeId;
 
   const recipeData = {
     // _id: existingId,
-    owner: '6348acd2e1a47ca32e79f46f',
+    owner: userId,
     name: formData.get('name'),
     // slug: formData.get('name').toLowerCase().replaceAll(' ', '-'),
     description: formData.get('description'),
@@ -31,21 +41,7 @@ const editRecipe = async (recipeId, formData) => {
 
   const updatedRecipe = await Recipe.findByIdAndUpdate(recipeId, recipeData);
 
-  // const filePath = 'recipes.json';
-
-  // const jsonData = await fs.readFile(filePath, 'utf-8');
-  // const data = JSON.parse(jsonData);
-
-  // const removeOldRecipe = data.filter((recipe) => recipe._id !== recipeId);
-
-  // removeOldRecipe.push(recipeData);
-
-  // const updatedJsonData = JSON.stringify(removeOldRecipe, null, 2);
-  // await fs.writeFile(filePath, updatedJsonData);
-
   revalidatePath('/', 'layout');
-
-  // redirect('/recipes');
 
   redirect(`/recipes/${updatedRecipe._id}`);
 };

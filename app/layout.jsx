@@ -13,7 +13,7 @@ const MainLayout = ({ children }) => {
   return (
     <AuthProvider>
       <html>
-        <body>
+        <body className="max-w-6xl m-auto">
           <Navbar />
           <main>{children}</main>
           <ToastContainer autoClose={1000} />

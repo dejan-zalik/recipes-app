@@ -1,8 +1,19 @@
+'use client';
+
 import Link from 'next/link';
+import { usePathname } from 'next/navigation';
 
 const RecipeCard = ({ recipe }) => {
+  const pathname = usePathname();
+
   return (
-    <Link href={`/recipes/${recipe._id}`}>
+    <Link
+      href={
+        pathname === '/communityrecipes'
+          ? `/communityrecipes/${recipe._id}`
+          : `/recipes/${recipe._id}`
+      }
+    >
       <div className="rounded-xl shadow-md relative">
         <div className="p-4">
           <div className="text-left md:text-center lg:text-left mb-6">

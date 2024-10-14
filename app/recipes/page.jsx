@@ -1,12 +1,22 @@
 import RecipeCard from '@/components/RecipeCard';
-// import recipes from '@/recipes.json';
 import connectDB from '@/config/database';
 import Recipe from '@/models/Recipe';
 import Link from 'next/link';
+import { getSessionUser } from '@/utils/getSessionUser';
+import convertToSerializableObject from '@/utils/convertToSerializableObject';
 
 const RecipesPage = async () => {
   await connectDB();
-  const recipes = await Recipe.find({}).lean();
+
+  const sessionUser = await getSessionUser();
+  const { userId } = sessionUser;
+
+  if (!userId) {
+    throw new Error('User ID is required');
+  }
+
+  const recipesDoc = await Recipe.find({ owner: userId }).lean();
+  const recipes = recipesDoc.map(convertToSerializableObject);
 
   return (
     <section className="px-4 py-6">

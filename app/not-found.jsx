@@ -8,7 +8,7 @@ const NotFoundPage = () => {
           <h1 className="text-2xl font-bold mt-4 mb-2">Page Not Found</h1>
           <p className="mb-10">The page you are looking for does not exist.</p>
           <Link
-            href="/"
+            href="/communityrecipes"
             className="shadow-md rounded border hover:bg-secondary font-bold py-4 px-6"
           >
             Go Home
