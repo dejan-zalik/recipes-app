@@ -80,7 +80,7 @@ const Navbar = () => {
               </ul>
             </div>
           ) : (
-            <div>
+            <div className="mr-3">
               {/* <Lottie
                 animationData={animation}
                 loop={true}
@@ -96,7 +96,7 @@ const Navbar = () => {
                     className="btn btn-ghost flex items-center rounded-md px-3 py-2 shadow-md"
                   >
                     <FaGoogle />
-                    <span>Login or Register</span>
+                    <span>Sign in</span>
                   </button>
                 ))}
             </div>
