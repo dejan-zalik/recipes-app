@@ -1,6 +1,7 @@
 'use client';
 
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useRef } from 'react';
+import { X, Pencil } from 'lucide-react';
 
 const AddInstructionsForm = () => {
   const [instruction, setInstruction] = useState('');
@@ -24,6 +25,26 @@ const AddInstructionsForm = () => {
     localStorage.setItem('instructions', JSON.stringify(instructions));
 
     setInstructions(instructions);
+  };
+
+  const handleDeleteInstruction = (index) => {
+    const updatedInstructions = instructions.filter(
+      (instruction) => instruction !== instructions[index]
+    );
+
+    localStorage.setItem('instructions', JSON.stringify(updatedInstructions));
+    setInstructions(updatedInstructions);
+  };
+
+  const dragInstruction = useRef(0);
+  const draggedOverInstruction = useRef(0);
+  const handleSort = () => {
+    const instructionsClone = [...instructions];
+    const temp = instructionsClone[dragInstruction.current];
+    instructionsClone[dragInstruction.current] =
+      instructionsClone[draggedOverInstruction.current];
+    instructionsClone[draggedOverInstruction.current] = temp;
+    setInstructions(instructionsClone);
   };
 
   useEffect(() => {
@@ -66,20 +87,46 @@ const AddInstructionsForm = () => {
       </div>
 
       {/* This will display it, but not send data to server */}
-      <div className='className="border text-left rounded w-full pt-2 px-3'>
-        {instructions.map((instruction, index) => (
-          <div key={index}>
-            <input
-              className="w-full bg-inherit"
-              value={'Step ' + ++index + ': ' + instruction}
-              key={index}
-              name="instructions"
-              readOnly
-              disabled
-            />
-          </div>
-        ))}
-      </div>
+      {instructions.map((instruction, index) => (
+        <div
+          key={index}
+          className="flex w-fit shadow hover:bg-secondary m-0.5 p-0.5"
+          draggable={true}
+          onDragStart={() => (dragInstruction.current = index)}
+          onDragEnter={() => (draggedOverInstruction.current = index)}
+          onDragEnd={handleSort}
+          onDragOver={(e) => e.preventDefault()}
+        >
+          <input
+            className="bg-inherit pr-4"
+            value={'Step ' + (1 + index).toString() + ': ' + instruction}
+            key={index}
+            name="instructions"
+            title={instruction}
+            readOnly
+            disabled
+          />
+          <button
+            className="btn btn-xs btn-ghost btn-circle"
+            onClick={(e) => {
+              e.preventDefault();
+              setInstruction(instruction);
+              handleDeleteInstruction(index);
+            }}
+          >
+            <Pencil size={14} />
+          </button>
+          <button
+            className="btn btn-xs btn-ghost btn-circle text-red-500"
+            onClick={(e) => {
+              e.preventDefault();
+              handleDeleteInstruction(index);
+            }}
+          >
+            <X size={14} />
+          </button>
+        </div>
+      ))}
 
       {/* This will not display it, but will send data to server */}
       <div>

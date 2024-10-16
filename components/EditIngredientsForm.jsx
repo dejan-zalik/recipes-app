@@ -1,6 +1,6 @@
 'use client';
 
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import { X, Pencil } from 'lucide-react';
 
 const EditIngredientsForm = ({ recipe }) => {
@@ -39,6 +39,17 @@ const EditIngredientsForm = ({ recipe }) => {
     );
     localStorage.setItem('ingredients', JSON.stringify(updatedIngredients));
     setIngredients(updatedIngredients);
+  };
+
+  const dragIngredient = useRef(0);
+  const draggedOverIngredient = useRef(0);
+  const handleSort = () => {
+    const ingredientsClone = [...ingredients];
+    const temp = ingredientsClone[dragIngredient.current];
+    ingredientsClone[dragIngredient.current] =
+      ingredientsClone[draggedOverIngredient.current];
+    ingredientsClone[draggedOverIngredient.current] = temp;
+    setIngredients(ingredientsClone);
   };
 
   useEffect(() => {
@@ -105,46 +116,60 @@ const EditIngredientsForm = ({ recipe }) => {
       </div>
 
       {/* This will display it, but not send data to server */}
-      <div className='className="border text-left rounded w-full pt-2 px-3'>
-        {ingredients.map((ingredient, index) => (
-          <div key={index} className="flex">
-            <input
-              className="bg-inherit pr-4"
-              value={
-                ingredient.quantity +
-                ' ' +
-                ingredient.unit +
-                ' ' +
-                ingredient.ingredient
-              }
-              name="ingredients"
-              readOnly
-              disabled
-            />
-            <button
-              className="btn btn-xs btn-ghost btn-circle shadow-md"
-              onClick={(e) => {
-                e.preventDefault();
-                setQuantity(ingredient.quantity);
-                setUnit(ingredient.unit);
-                setIngredient(ingredient.ingredient);
-                handleDeleteIngredient(index);
-              }}
-            >
-              <Pencil size={14} />
-            </button>
-            <button
-              className="btn btn-xs btn-ghost btn-circle shadow-md text-red-500"
-              onClick={(e) => {
-                e.preventDefault();
-                handleDeleteIngredient(index);
-              }}
-            >
-              <X size={14} />
-            </button>
-          </div>
-        ))}
-      </div>
+
+      {ingredients.map((ingredient, index) => (
+        <div
+          key={index}
+          className="flex w-fit shadow hover:bg-secondary m-0.5 p-0.5"
+          draggable={true}
+          onDragStart={() => (dragIngredient.current = index)}
+          onDragEnter={() => (draggedOverIngredient.current = index)}
+          onDragEnd={handleSort}
+          onDragOver={(e) => e.preventDefault()}
+        >
+          <input
+            className="bg-inherit pr-4"
+            value={
+              ingredient.quantity +
+              ' ' +
+              ingredient.unit +
+              ' ' +
+              ingredient.ingredient
+            }
+            name="ingredients"
+            title={
+              ingredient.quantity +
+              ' ' +
+              ingredient.unit +
+              ' ' +
+              ingredient.ingredient
+            }
+            readOnly
+            disabled
+          />
+          <button
+            className="btn btn-xs btn-ghost btn-circle"
+            onClick={(e) => {
+              e.preventDefault();
+              setQuantity(ingredient.quantity);
+              setUnit(ingredient.unit);
+              setIngredient(ingredient.ingredient);
+              handleDeleteIngredient(index);
+            }}
+          >
+            <Pencil size={14} />
+          </button>
+          <button
+            className="btn btn-xs btn-ghost btn-circle text-red-500"
+            onClick={(e) => {
+              e.preventDefault();
+              handleDeleteIngredient(index);
+            }}
+          >
+            <X size={14} />
+          </button>
+        </div>
+      ))}
 
       {/* This will not display it, but will send data to server */}
       <div>
