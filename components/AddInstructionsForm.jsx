@@ -96,6 +96,9 @@ const AddInstructionsForm = () => {
           onDragEnter={() => (draggedOverInstruction.current = index)}
           onDragEnd={handleSort}
           onDragOver={(e) => e.preventDefault()}
+          onTouchStart={() => (dragInstruction.current = index)}
+          onTouchMove={() => (draggedOverInstruction.current = index)}
+          onTouchEnd={handleSort}
         >
           <input
             className="bg-inherit pr-4"

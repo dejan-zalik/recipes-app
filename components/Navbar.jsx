@@ -5,10 +5,7 @@ import Link from 'next/link';
 import Image from 'next/image';
 import profileDefault from '@/assets/images/profile.png';
 import { FaGoogle } from 'react-icons/fa';
-import { AlignJustify } from 'lucide-react';
 import { signIn, signOut, useSession, getProviders } from 'next-auth/react';
-// import Lottie from 'lottie-react';
-// import animation from '@/assets/lottie/arrowright.json';
 
 const Navbar = () => {
   const { data: session } = useSession();
@@ -40,20 +37,13 @@ const Navbar = () => {
           </Link>
         </div>
         <div className="navbar justify-end">
-          {session ? (
-            // <Link
-            //   href="/recipes"
-            //   className="shadow-md rounded border hover:bg-secondary font-bold py-4 px-6"
-            // >
-            //   <span>Private</span>
-            // </Link>
+          {session && (
             <div className="dropdown dropdown-left">
               <div
                 tabIndex={0}
                 role="button"
                 className="btn btn-ghost btn-circle"
               >
-                {/* <AlignJustify /> */}
                 <Image
                   className="h-8 w-8 rounded-full"
                   src={profileImage || profileDefault}
@@ -79,13 +69,9 @@ const Navbar = () => {
                 </li>
               </ul>
             </div>
-          ) : (
+          )}
+          {!session && (
             <div className="mr-3">
-              {/* <Lottie
-                animationData={animation}
-                loop={true}
-                className="w-12 pr-3"
-              /> */}
               {providers &&
                 Object.values(providers).map((provider, id) => (
                   <button
