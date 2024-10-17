@@ -126,12 +126,9 @@ const AddIngredientsForm = () => {
           onDragEnter={() => (draggedOverIngredient.current = index)}
           onDragEnd={handleSort}
           onDragOver={(e) => e.preventDefault()}
-          onTouchStart={() => (dragIngredient.current = index)}
-          onTouchMove={() => (draggedOverIngredient.current = index)}
-          onTouchEnd={handleSort}
         >
           <input
-            className="bg-inherit pr-4"
+            className="bg-inherit pr-4 hover:cursor-grab"
             value={
               ingredient.quantity +
               ' ' +
