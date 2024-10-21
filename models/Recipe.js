@@ -18,6 +18,9 @@ const RecipeSchema = new Schema(
     ingredients: [
       {
         _id: false,
+        id: {
+          type: Number,
+        },
         quantity: {
           type: String,
         },
@@ -31,8 +34,13 @@ const RecipeSchema = new Schema(
     ],
     instructions: [
       {
-        type: String,
-        required: true,
+        _id: false,
+        id: {
+          type: Number,
+        },
+        instruction: {
+          type: String,
+        },
       },
     ],
   },

@@ -1,7 +1,7 @@
 'use client';
 
-import { useState, useEffect, useRef } from 'react';
-import { X, Pencil } from 'lucide-react';
+import { useState, useEffect } from 'react';
+import DragIngredientsWrapper from './DragIngredientsWrapper';
 
 const EditIngredientsForm = ({ recipe }) => {
   const [quantity, setQuantity] = useState('');
@@ -19,13 +19,13 @@ const EditIngredientsForm = ({ recipe }) => {
 
     if (quantity !== '' && unit !== '' && ingredient !== '') {
       ingredients.push({
+        id: Date.now(),
         quantity: quantity.trim(),
         unit: unit.trim(),
         ingredient: ingredient.trim(),
       });
     } else {
       window.alert('Please fill out all ingredients');
-      // return;
     }
 
     localStorage.setItem('ingredients', JSON.stringify(ingredients));
@@ -41,24 +41,14 @@ const EditIngredientsForm = ({ recipe }) => {
     setIngredients(updatedIngredients);
   };
 
-  const dragIngredient = useRef(0);
-  const draggedOverIngredient = useRef(0);
-  const handleSort = () => {
-    const ingredientsClone = [...ingredients];
-    const temp = ingredientsClone[dragIngredient.current];
-    ingredientsClone[dragIngredient.current] =
-      ingredientsClone[draggedOverIngredient.current];
-    ingredientsClone[draggedOverIngredient.current] = temp;
-    setIngredients(ingredientsClone);
-  };
+  useEffect(() => {
+    setIngredients(recipe.ingredients);
+    localStorage.setItem('ingredients', JSON.stringify(recipe.ingredients));
+  }, []);
 
   useEffect(() => {
-    if (localStorage.getItem('ingredients') === null) {
-      setIngredients(recipe.ingredients);
-    } else {
-      setIngredients(JSON.parse(localStorage.getItem('ingredients')));
-    }
-  }, []);
+    localStorage.setItem('ingredients', JSON.stringify(ingredients));
+  }, [ingredients]);
 
   return (
     <div className="mb-4">
@@ -117,59 +107,14 @@ const EditIngredientsForm = ({ recipe }) => {
 
       {/* This will display it, but not send data to server */}
 
-      {ingredients.map((ingredient, index) => (
-        <div
-          key={index}
-          className="flex w-fit shadow hover:bg-secondary m-0.5 p-0.5"
-          draggable={true}
-          onDragStart={() => (dragIngredient.current = index)}
-          onDragEnter={() => (draggedOverIngredient.current = index)}
-          onDragEnd={handleSort}
-          onDragOver={(e) => e.preventDefault()}
-        >
-          <input
-            className="bg-inherit pr-4 hover:cursor-grab"
-            value={
-              ingredient.quantity +
-              ' ' +
-              ingredient.unit +
-              ' ' +
-              ingredient.ingredient
-            }
-            name="ingredients"
-            title={
-              ingredient.quantity +
-              ' ' +
-              ingredient.unit +
-              ' ' +
-              ingredient.ingredient
-            }
-            readOnly
-            disabled
-          />
-          <button
-            className="btn btn-xs btn-ghost btn-circle"
-            onClick={(e) => {
-              e.preventDefault();
-              setQuantity(ingredient.quantity);
-              setUnit(ingredient.unit);
-              setIngredient(ingredient.ingredient);
-              handleDeleteIngredient(index);
-            }}
-          >
-            <Pencil size={14} />
-          </button>
-          <button
-            className="btn btn-xs btn-ghost btn-circle text-red-500"
-            onClick={(e) => {
-              e.preventDefault();
-              handleDeleteIngredient(index);
-            }}
-          >
-            <X size={14} />
-          </button>
-        </div>
-      ))}
+      <DragIngredientsWrapper
+        ingredients={ingredients}
+        setQuantity={setQuantity}
+        setUnit={setUnit}
+        setIngredient={setIngredient}
+        setIngredients={setIngredients}
+        handleDeleteIngredient={handleDeleteIngredient}
+      />
 
       {/* This will not display it, but will send data to server */}
       <div>
