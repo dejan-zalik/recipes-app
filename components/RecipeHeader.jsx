@@ -1,7 +1,7 @@
 'use client';
 
 import Link from 'next/link';
-import { X, Pencil } from 'lucide-react';
+import { X, Pencil, CookingPot } from 'lucide-react';
 import { toast } from 'react-toastify';
 import deleteRecipe from '@/app/actions/deleteRecipe';
 import { useRouter } from 'next/navigation';
@@ -35,8 +35,16 @@ const RecipeHeader = ({ recipe }) => {
         </Link>
       </div>
       <div className="container m-auto pt-6 text-center">
+        <button
+          onClick={() => document.getElementById('my_modal_1').showModal()}
+          className="btn btn-ghost btn-circle shadow-md mx-1"
+          title="start cooking"
+        >
+          <CookingPot />
+        </button>
+        {/* </Link> */}
         <Link href={`/recipes/${recipe._id}/edit`} className="px-1">
-          <button className="btn btn-ghost btn-circle shadow-md">
+          <button className="btn btn-ghost btn-circle shadow-md" title="edit">
             <Pencil />
           </button>
         </Link>
@@ -44,6 +52,7 @@ const RecipeHeader = ({ recipe }) => {
           <button
             className="btn btn-ghost btn-circle text-red-500 shadow-md"
             type="button"
+            title="delete"
             onClick={() => handleDeleteRecipe(recipe._id)}
           >
             <X />

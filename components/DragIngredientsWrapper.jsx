@@ -41,7 +41,7 @@ const DragIngredientsWrapper = ({
         className="flex w-fit shadow hover:bg-secondary m-0.5 p-0.5 touch-none"
       >
         <input
-          className="bg-inherit pr-4 hover:cursor-grab"
+          className="bg-inherit pr-4 hover:cursor-grab select-none"
           value={`${ingredient.quantity} ${ingredient.unit} ${ingredient.ingredient}`}
           name="ingredients"
           title={`${ingredient.quantity} ${ingredient.unit} ${ingredient.ingredient}`}

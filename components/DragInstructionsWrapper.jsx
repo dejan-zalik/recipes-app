@@ -39,7 +39,7 @@ const DragInstructionsWrapper = ({
         className="flex w-fit shadow hover:bg-secondary m-0.5 p-0.5 touch-none"
       >
         <input
-          className="bg-inherit pr-4 hover:cursor-grab"
+          className="bg-inherit pr-4 hover:cursor-grab select-none"
           value={
             'Step ' + (1 + index).toString() + ': ' + instruction.instruction
           }
