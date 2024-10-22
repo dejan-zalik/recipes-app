@@ -43,6 +43,10 @@ const RecipeSchema = new Schema(
         },
       },
     ],
+    is_copied: {
+      type: Boolean,
+      default: false,
+    },
   },
   {
     timestamps: true,

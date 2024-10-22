@@ -16,7 +16,9 @@ const CommunityRecipesPage = async () => {
 
   const recipesDoc = await Recipe.find({}).lean();
   const recipesAll = recipesDoc.map(convertToSerializableObject);
-  const recipes = recipesAll.filter((recipe) => recipe.owner !== userId);
+  const recipes = recipesAll.filter(
+    (recipe) => recipe.owner !== userId && !recipe.is_copied
+  );
 
   return (
     <section className="px-4 py-6">

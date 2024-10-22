@@ -10,7 +10,7 @@ const RecipeEditPage = async ({ params }) => {
 
   const recipeDoc = await Recipe.findById(params.id).lean();
   const recipe = convertToSerializableObject(recipeDoc);
-  // const recipe = recipes.filter((recipe) => recipe._id === params.id)[0];
+
   return (
     <section className="px-4 py-6">
       <div className="container m-auto py-4 text-center">

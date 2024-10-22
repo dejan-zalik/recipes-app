@@ -24,6 +24,7 @@ const copyRecipe = async (recipe) => {
     description: recipe.description,
     ingredients: recipe.ingredients,
     instructions: recipe.instructions,
+    is_copied: true,
   };
 
   const newRecipe = new Recipe(recipeData);

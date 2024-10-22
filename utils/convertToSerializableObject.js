@@ -13,13 +13,13 @@ const convertToSerializableObject = (leanDocument) => {
   //   }
   // });
 
-  leanDocument['instructions'].map((obj) => {
-    for (const key of Object.keys(obj)) {
-      if (obj[key].toJSON && obj[key].toString) {
-        obj[key] = obj[key].toString();
-      }
-    }
-  });
+  // leanDocument['instructions'].map((obj) => {
+  //   for (const key of Object.keys(obj)) {
+  //     if (obj[key].toJSON && obj[key].toString) {
+  //       obj[key] = obj[key].toString();
+  //     }
+  //   }
+  // });
 
   return leanDocument;
 };
