@@ -1,7 +1,6 @@
 import GoogleProvider from 'next-auth/providers/google';
 import connectDB from '@/config/database';
 import User from '@/models/User';
-import { redirect } from 'next/navigation';
 
 export const authOptions = {
   providers: [

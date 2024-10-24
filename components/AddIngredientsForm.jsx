@@ -104,6 +104,9 @@ const AddIngredientsForm = () => {
 
       <DragIngredientsWrapper
         ingredients={ingredients}
+        quantity={quantity}
+        unit={unit}
+        ingredient={ingredient}
         setQuantity={setQuantity}
         setUnit={setUnit}
         setIngredient={setIngredient}

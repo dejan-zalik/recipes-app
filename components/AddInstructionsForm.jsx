@@ -74,6 +74,7 @@ const AddInstructionsForm = () => {
 
       <DragInstructionsWrapper
         instructions={instructions}
+        instruction={instruction}
         setInstruction={setInstruction}
         setInstructions={setInstructions}
         handleDeleteInstruction={handleDeleteInstruction}

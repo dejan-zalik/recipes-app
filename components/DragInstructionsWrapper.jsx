@@ -21,6 +21,7 @@ import { CSS } from '@dnd-kit/utilities';
 
 const DragInstructionsWrapper = ({
   instructions,
+  instruction: filledInstruction,
   setInstructions,
   setInstruction,
   handleDeleteInstruction,
@@ -51,9 +52,14 @@ const DragInstructionsWrapper = ({
         <button
           className="btn btn-xs btn-ghost btn-circle"
           onClick={(e) => {
-            e.preventDefault();
-            setInstruction(instruction.instruction);
-            handleDeleteInstruction(index);
+            if (filledInstruction === '') {
+              e.preventDefault();
+              setInstruction(instruction.instruction);
+              handleDeleteInstruction(index);
+            } else {
+              e.preventDefault();
+              return;
+            }
           }}
         >
           <Pencil size={14} />

@@ -21,6 +21,9 @@ import { CSS } from '@dnd-kit/utilities';
 
 const DragIngredientsWrapper = ({
   ingredients,
+  quantity: filledQuantity,
+  unit: filledUnit,
+  ingredient: filledIngredient,
   setIngredients,
   setQuantity,
   setUnit,
@@ -51,11 +54,20 @@ const DragIngredientsWrapper = ({
         <button
           className="btn btn-xs btn-ghost btn-circle"
           onClick={(e) => {
-            e.preventDefault();
-            setQuantity(ingredient.quantity);
-            setUnit(ingredient.unit);
-            setIngredient(ingredient.ingredient);
-            handleDeleteIngredient(index);
+            if (
+              filledQuantity === '' &&
+              filledUnit === '' &&
+              filledIngredient === ''
+            ) {
+              e.preventDefault();
+              setQuantity(ingredient.quantity);
+              setUnit(ingredient.unit);
+              setIngredient(ingredient.ingredient);
+              handleDeleteIngredient(index);
+            } else {
+              e.preventDefault();
+              return;
+            }
           }}
         >
           <Pencil size={14} />
