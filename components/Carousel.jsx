@@ -33,7 +33,7 @@ const Carousel = ({ recipe }) => {
         >
           <ChevronLeft />
         </button>
-        <div className="flex flex-nowrap overflow-hidden m-6">
+        <div className="flex flex-nowrap overflow-hidden m-6 w-full">
           {data.map((item, index) => {
             return (
               <p
