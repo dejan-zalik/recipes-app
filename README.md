@@ -1,1 +1,1 @@
-published at: https://whatscookin-nine.vercel.app/
+deployed at: https://whatscookin-nine.vercel.app/
